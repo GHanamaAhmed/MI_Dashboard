@@ -10,6 +10,9 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
+import { useContext, useEffect } from 'react';
+import { infoContext } from 'contexts/infoContext';
+import { specialityContext } from 'contexts/speciality';
 // ==============================|| APP ||============================== //
 
 const App = () => {

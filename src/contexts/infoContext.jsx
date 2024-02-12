@@ -28,7 +28,6 @@ export default function InfoContextProvider({ children }) {
           console.log(info);
           window.location.href = '/auth/login';
         }
-        console.log(info);
       }
     }
   }, [pathname]);

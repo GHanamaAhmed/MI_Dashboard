@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -12,6 +12,7 @@ import Chart from 'react-apexcharts';
 // project imports
 import chartData from './chart-data/bajaj-area-chart';
 import { Axios } from 'utils/axios';
+import { annoucementContext } from 'contexts/annoucement';
 
 // ===========================|| DASHBOARD DEFAULT - BAJAJ AREA CHART CARD ||=========================== //
 
@@ -21,15 +22,7 @@ const BajajAreaChartCard = () => {
   const { navType } = customization;
 
   const orangeDark = theme.palette.secondary[800];
-  const [post, setPost] = useState();
-  useEffect(() => {
-    Axios.get('/announcement/admin')
-      .then((res) => {
-        setPost(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  const {posts,setPosts}=useContext(annoucementContext)
   useEffect(() => {
     const newSupportChart = {
       ...chartData.options,
@@ -53,7 +46,7 @@ const BajajAreaChartCard = () => {
             </Grid>
             <Grid item>
               <Typography variant="h4" sx={{ color: theme.palette.grey[800] }}>
-                {post?.reduce((p, c) => p + c?.views || 0, 0)}
+                {posts?.reduce((p, c) => p + c?.views || 0, 0)}
               </Typography>
             </Grid>
           </Grid>

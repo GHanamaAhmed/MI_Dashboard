@@ -34,7 +34,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
-
+import config from "../../../../config";
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
@@ -44,10 +44,7 @@ const FirebaseLogin = ({ ...others }) => {
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
 
-  const googleHandler = async () => {
-    console.error('Login');
-  };
-
+ 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -63,9 +60,9 @@ const FirebaseLogin = ({ ...others }) => {
         <Grid item xs={12}>
           <AnimateButton>
             <Button
+            href={config.BACKEND_URL + `/auth/google`}
               disableElevation
               fullWidth
-              onClick={googleHandler}
               size="large"
               variant="outlined"
               sx={{

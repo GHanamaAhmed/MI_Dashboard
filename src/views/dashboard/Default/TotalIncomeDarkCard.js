@@ -10,8 +10,9 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Axios } from 'utils/axios';
+import { annoucementContext } from 'contexts/annoucement';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -45,15 +46,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeDarkCard = ({ isLoading }) => {
   const theme = useTheme();
-  const [post, setPost] = useState();
-  useEffect(() => {
-    Axios.get('/announcement/admin')
-      .then((res) => {
-        setPost(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  const {posts,setPosts}=useContext(annoucementContext)
   return (
     <>
       {isLoading ? (
@@ -84,7 +77,7 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                   }}
                   primary={
                     <Typography variant="h4" sx={{ color: '#fff' }}>
-                      {post?.length}
+                      {posts?.length}
                     </Typography>
                   }
                   secondary={

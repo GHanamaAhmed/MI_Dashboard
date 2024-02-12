@@ -17,29 +17,45 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 // import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { Axios } from 'utils/axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { annoucementContext } from 'contexts/annoucement';
 // import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
 const PopularCard = ({ isLoading }) => {
   const theme = useTheme();
-  const [post, setPost] = useState();
+  const [posts, setPosts] = useState();
   const [dPosts, setDPosts] = useState([]);
+  const postsContext = useContext(annoucementContext);
   useEffect(() => {
     Axios.get('/announcement/admin')
       .then((res) => {
-        setPost(res.data);
-        console.log(res.data);
+        setPosts(res.data);
       })
       .catch((err) => console.error(err));
+    setInterval(() => {
+      Axios.get('/announcement/admin')
+        .then((res) => {
+          setPosts(res.data);
+        })
+        .catch((err) => console.error(err));
+    }, 6000);
   }, []);
   const deletePost = (id) => {
     Axios.delete('/announcement', {
       data: {
         ids: [id]
       }
-    });
+    })
+      .then((res) => {
+        setPosts((p) => p.filter((e) => e?._id !== id));
+        postsContext.setPosts((p) => p.filter((e) => e?._id !== id));
+      })
+      .catch((err) => {
+        alert(err?.respone?.dara || "can't deleted");
+        console.error(err);
+      });
   };
   return (
     <>
@@ -61,12 +77,22 @@ const PopularCard = ({ isLoading }) => {
               </Grid>
               <Grid item xs={12}>
                 <Grid container direction="column">
-                  {post?.map((e, i) => (
+                  {posts?.map((e, i) => (
                     <Grid item>
                       <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                           <Typography variant="subtitle1" color="inherit">
                             {e?.title}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" color="inherit">
+                            {e?.departement}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" color="inherit">
+                            {e?.speciality}
                           </Typography>
                         </Grid>
                         <Grid item>
@@ -93,7 +119,7 @@ const PopularCard = ({ isLoading }) => {
             </Grid>
           </CardContent>
           <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-            <Button href='/posts' size="small" disableElevation>
+            <Button href="/posts" size="small" disableElevation>
               View All
               <ChevronRightOutlinedIcon />
             </Button>

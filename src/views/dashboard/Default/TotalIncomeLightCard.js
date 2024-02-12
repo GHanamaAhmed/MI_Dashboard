@@ -10,8 +10,9 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Axios } from 'utils/axios';
+import { annoucementContext } from 'contexts/annoucement';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -43,14 +44,20 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeLightCard = ({ isLoading }) => {
   const theme = useTheme();
-  const [post, setPost] = useState();
+  const [posts, setPosts] = useState();
   useEffect(() => {
     Axios.get('/announcement/admin')
       .then((res) => {
-        setPost(res.data);
-        console.log(res.data);
+        setPosts(res.data);
       })
       .catch((err) => console.error(err));
+    setInterval(() => {
+      Axios.get('/announcement/admin')
+        .then((res) => {
+          setPosts(res.data);
+        })
+        .catch((err) => console.error(err));
+    }, 6000);
   }, []);
   return (
     <>
@@ -80,7 +87,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                     mt: 0.45,
                     mb: 0.45
                   }}
-                  primary={<Typography variant="h4">{post?.reduce((p, c) => p + c?.views || 0, 0)}</Typography>}
+                  primary={<Typography variant="h4">{posts?.reduce((p, c) => p + c?.views || 0, 0)}</Typography>}
                   secondary={
                     <Typography
                       variant="subtitle2"
