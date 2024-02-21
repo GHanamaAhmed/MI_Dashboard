@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -37,6 +37,8 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons-react';
+import { Axios } from 'utils/axios';
+import { infoContext } from 'contexts/infoContext';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -54,8 +56,15 @@ const ProfileSection = () => {
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
+
   const handleLogout = async () => {
-    console.log('Logout');
+    Axios.head('/auth/logout')
+      .then(() => {
+        navigate('/auth/login');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleClose = (event) => {
@@ -63,15 +72,6 @@ const ProfileSection = () => {
       return;
     }
     setOpen(false);
-  };
-
-  const handleListItemClick = (event, index, route = '') => {
-    setSelectedIndex(index);
-    handleClose(event);
-
-    if (route && route !== '') {
-      navigate(route);
-    }
   };
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -85,7 +85,7 @@ const ProfileSection = () => {
 
     prevOpen.current = open;
   }, [open]);
-
+  const { info, loading, auth } = useContext(infoContext);
   return (
     <>
       <Chip
@@ -110,7 +110,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={info?.photo||User1}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
@@ -122,7 +122,6 @@ const ProfileSection = () => {
             color="inherit"
           />
         }
-       
         variant="outlined"
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}

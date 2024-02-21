@@ -30,12 +30,12 @@ const Dashboard = () => {
           <Grid item lg={4} md={6} sm={6} xs={12}>
             <TotalOrderLineChartCard isLoading={isLoading} />
           </Grid> */}
-          <Grid item lg={4} md={12} sm={12} xs={12}>
+          <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
+              <Grid item xs={6}>
                 <TotalIncomeDarkCard isLoading={isLoading} />
               </Grid>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
+              <Grid item xs={6}>
                 <TotalIncomeLightCard isLoading={isLoading} />
               </Grid>
             </Grid>
@@ -47,7 +47,7 @@ const Dashboard = () => {
           {/* <Grid item xs={12} md={8}>
             <TotalGrowthBarChart isLoading={isLoading} />
           </Grid> */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12}>
             <PopularCard isLoading={isLoading} />
           </Grid>
         </Grid>

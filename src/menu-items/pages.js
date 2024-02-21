@@ -1,3 +1,0 @@
-// assets
-
-export default pages;

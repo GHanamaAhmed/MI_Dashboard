@@ -25,12 +25,11 @@ export default function InfoContextProvider({ children }) {
     if (!loading) {
       if (!RegExp('/auth*').test(pathname)) {
         if (!auth) {
-          console.log(info);
           window.location.href = '/auth/login';
         }
       }
     }
-  }, [pathname]);
+  }, [pathname, loading, auth]);
   return <infoContext.Provider value={{ info, loading, auth }}>{children}</infoContext.Provider>;
 }
 export { infoContext };

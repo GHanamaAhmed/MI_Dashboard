@@ -1,8 +1,6 @@
 import { IconDashboard } from '@tabler/icons-react';
-import { IconBrandChrome, IconHelp } from '@tabler/icons-react';
+import { IconBrandChrome } from '@tabler/icons-react';
 import { IconKey } from '@tabler/icons-react';
-
-// ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const pages = {
   id: 'pages',
@@ -11,11 +9,25 @@ const pages = {
   type: 'group',
   children: [
     {
+      id: 'sample-page',
+      title: 'Post',
+      type: 'item',
+      url: '/post',
+      icon: IconBrandChrome,
+      breadcrumbs: false
+    }
+  ]
+};
+
+const other = {
+  id: 'sample-docs-roadmap',
+  type: 'group',
+  children: [
+    {
       id: 'authentication',
       title: 'Authentication',
       type: 'collapse',
       icon: IconKey,
-
       children: [
         {
           id: 'login3',
@@ -35,21 +47,6 @@ const pages = {
     }
   ]
 };
-
-const other = {
-  id: 'sample-docs-roadmap',
-  type: 'group',
-  children: [
-    {
-      id: 'sample-page',
-      title: 'Sample Page',
-      type: 'item',
-      url: '/sample-page',
-      icon: IconBrandChrome,
-      breadcrumbs: false
-    }
-  ]
-};
 const dashboard = {
   id: 'dashboard',
   title: 'Dashboard',
@@ -65,6 +62,7 @@ const dashboard = {
     }
   ]
 };
+
 const menuItems = {
   items: [dashboard, pages, other]
 };

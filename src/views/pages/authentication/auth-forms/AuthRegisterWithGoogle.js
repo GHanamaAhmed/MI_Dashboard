@@ -56,7 +56,7 @@ const FirebaseRegister = ({ ...others }) => {
           faculte: Yup.string().max(255).required('Faculte is required')
         })}
         onSubmit={(values) => {
-          window.location.href = config.BACKEND_URL + `/auth/google?departement=${values.departement}&faculty=${values.faculte}&google=true`;
+          window.location.href = config.BACKEND_URL + `/auth/google?departement=${values?.departement}&faculty=${values?.faculte}&google=true`;
         }}
         validator={() => ({})}
       >

@@ -15,6 +15,7 @@ import config from './config';
 import InfoContextProvider from 'contexts/infoContext';
 import SpecialityContextProvider from 'contexts/speciality';
 import AnnoucementContextProvider from 'contexts/annoucement';
+import SearchContextProvider from 'contexts/searchContext';
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
@@ -25,9 +26,11 @@ root.render(
     <BrowserRouter basename={config.basename}>
       <InfoContextProvider>
         <SpecialityContextProvider>
-          <AnnoucementContextProvider>
-          <App />
-          </AnnoucementContextProvider>
+          <SearchContextProvider>
+            <AnnoucementContextProvider>
+              <App />
+            </AnnoucementContextProvider>
+          </SearchContextProvider>
         </SpecialityContextProvider>
       </InfoContextProvider>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import Transitions from 'ui-component/extended/Transitions';
 // assets
 import { IconAdjustmentsHorizontal, IconSearch, IconX } from '@tabler/icons-react';
 import { shouldForwardProp } from '@mui/system';
+import { searchContext } from 'contexts/searchContext';
 
 // styles
 const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
@@ -117,8 +118,7 @@ MobileSearch.propTypes = {
 
 const SearchSection = () => {
   const theme = useTheme();
-  const [value, setValue] = useState('');
-
+  const { search, setSearch } = useContext(searchContext);
   return (
     <>
       <Box sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -148,7 +148,7 @@ const SearchSection = () => {
                         <Box sx={{ p: 2 }}>
                           <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item xs>
-                              <MobileSearch value={value} setValue={setValue} popupState={popupState} />
+                              <MobileSearch value={search} setValue={setSearch} popupState={popupState} />
                             </Grid>
                           </Grid>
                         </Box>
@@ -164,23 +164,23 @@ const SearchSection = () => {
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <OutlineInputStyle
           id="input-search-header"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Search"
           startAdornment={
             <InputAdornment position="start">
               <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
             </InputAdornment>
           }
-          endAdornment={
-            <InputAdornment position="end">
-              <ButtonBase sx={{ borderRadius: '12px' }}>
-                <HeaderAvatarStyle variant="rounded">
-                  <IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
-                </HeaderAvatarStyle>
-              </ButtonBase>
-            </InputAdornment>
-          }
+          // endAdornment={
+          //   <InputAdornment position="end">
+          //     <ButtonBase sx={{ borderRadius: '12px' }}>
+          //       <HeaderAvatarStyle variant="rounded">
+          //         <IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
+          //       </HeaderAvatarStyle>
+          //     </ButtonBase>
+          //   </InputAdornment>
+          // }
           aria-describedby="search-helper-text"
           inputProps={{ 'aria-label': 'weight' }}
         />

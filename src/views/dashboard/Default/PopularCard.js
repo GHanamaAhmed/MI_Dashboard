@@ -19,15 +19,16 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import { Axios } from 'utils/axios';
 import { useContext, useEffect, useState } from 'react';
 import { annoucementContext } from 'contexts/annoucement';
-// import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
+import { toasty } from 'utils/toast';
+import { searchContext } from 'contexts/searchContext';
 
 const PopularCard = ({ isLoading }) => {
   const theme = useTheme();
   const [posts, setPosts] = useState();
   const [dPosts, setDPosts] = useState([]);
   const postsContext = useContext(annoucementContext);
+  const { search } = useContext(searchContext);
+  const regex = new RegExp(search, 'i');
   useEffect(() => {
     Axios.get('/announcement/admin')
       .then((res) => {
@@ -53,7 +54,11 @@ const PopularCard = ({ isLoading }) => {
         postsContext.setPosts((p) => p.filter((e) => e?._id !== id));
       })
       .catch((err) => {
-        alert(err?.respone?.dara || "can't deleted");
+        toasty(err?.respone?.data?.toString() || "can't deleted", {
+          toastId: 'post',
+          autoClose: 5000,
+          type: 'warning'
+        });
         console.error(err);
       });
   };
@@ -77,53 +82,49 @@ const PopularCard = ({ isLoading }) => {
               </Grid>
               <Grid item xs={12}>
                 <Grid container direction="column">
-                  {posts?.map((e, i) => (
-                    <Grid item>
-                      <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                          <Typography variant="subtitle1" color="inherit">
-                            {e?.title}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1" color="inherit">
-                            {e?.departement}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1" color="inherit">
-                            {e?.speciality}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1" color="inherit">
-                            {e?.views}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1" color="inherit">
-                            {e?.createAt}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <IconButton onClick={() => deletePost(e?._id)} color="secondary" aria-label="delete">
-                            <DeleteOutline o color="red" />
-                          </IconButton>
+                  {posts
+                    ?.filter((e) => !search || regex.test(e?.title) || regex.test(e?.departement) || regex.test(e?.speciality))
+                    ?.map((e, i) => (
+                      <Grid item>
+                        <Grid container alignItems="center" justifyContent="space-between">
+                          <Grid item>
+                            <Typography variant="subtitle1" color="inherit">
+                              {e?.title}
+                            </Typography>
+                          </Grid>
+                          {/* <Grid item>
+                            <Typography variant="subtitle1" color="inherit">
+                              {e?.departement}
+                            </Typography>
+                          </Grid> */}
+                          {/* <Grid item>
+                            <Typography variant="subtitle1" color="inherit">
+                              {e?.speciality}
+                            </Typography>
+                          </Grid> */}
+                          <Grid item>
+                            <Typography variant="subtitle1" color="inherit">
+                              {e?.views}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="subtitle1" color="inherit">
+                              {e?.createAt}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <IconButton onClick={() => deletePost(e?._id)} color="secondary" aria-label="delete">
+                              <DeleteOutline o color="red" />
+                            </IconButton>
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
-                  ))}
+                    ))}
                 </Grid>
                 <Divider sx={{ my: 1.5 }} />
               </Grid>
             </Grid>
           </CardContent>
-          <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-            <Button href="/posts" size="small" disableElevation>
-              View All
-              <ChevronRightOutlinedIcon />
-            </Button>
-          </CardActions>
         </MainCard>
       )}
     </>

@@ -36,6 +36,7 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Axios } from '../../../../utils/axios';
+import { toasty } from 'utils/toast';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -165,6 +166,11 @@ const FirebaseRegister = ({ ...others }) => {
               navigate('/');
             })
             .catch((err) => {
+              toasty(err?.toString(), {
+                toastId: 'register',
+                autoClose: 5000,
+                type: 'warning'
+              });
               console.log(err);
             });
         }}
@@ -357,23 +363,6 @@ const FirebaseRegister = ({ ...others }) => {
                 </FormControl>
               )}
 
-              <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                    }
-                    label={
-                      <Typography variant="subtitle1">
-                        Agree with &nbsp;
-                        <Typography variant="subtitle1" component={Link} to="#">
-                          Terms & Condition.
-                        </Typography>
-                      </Typography>
-                    }
-                  />
-                </Grid>
-              </Grid>
               {errors.submit && (
                 <Box sx={{ mt: 3 }}>
                   <FormHelperText error>{errors.submit}</FormHelperText>
